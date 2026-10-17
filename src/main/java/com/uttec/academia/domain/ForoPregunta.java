@@ -11,14 +11,18 @@ public class ForoPregunta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 50)
-    private String etiqueta;
+    @ManyToOne
+    @JoinColumn(name = "etiqueta_id", nullable = false)
+    private Etiqueta etiqueta;
 
     @Column(nullable = false, length = 255)
     private String titulo;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String contenido;
+
     @Column(nullable = false)
-    private LocalDateTime fecha;
+    private LocalDateTime fecha = LocalDateTime.now();
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
@@ -29,11 +33,14 @@ public class ForoPregunta {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getEtiqueta() { return etiqueta; }
-    public void setEtiqueta(String etiqueta) { this.etiqueta = etiqueta; }
+    public Etiqueta getEtiqueta() { return etiqueta; }
+    public void setEtiqueta(Etiqueta etiqueta) { this.etiqueta = etiqueta; }
 
     public String getTitulo() { return titulo; }
     public void setTitulo(String titulo) { this.titulo = titulo; }
+
+    public String getContenido() { return contenido; }
+    public void setContenido(String contenido) { this.contenido = contenido; }
 
     public LocalDateTime getFecha() { return fecha; }
     public void setFecha(LocalDateTime fecha) { this.fecha = fecha; }

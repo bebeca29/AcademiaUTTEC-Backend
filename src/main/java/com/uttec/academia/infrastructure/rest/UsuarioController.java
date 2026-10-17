@@ -5,6 +5,7 @@ import com.uttec.academia.domain.Usuario;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -18,36 +19,43 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @PostMapping("/registro")
-    public ResponseEntity<?> registro(@RequestBody Usuario usuario) {
+    @GetMapping
+    public List<Usuario> listar() {
+        return usuarioService.listar();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtener(@PathVariable Long id) {
         try {
-            Usuario nuevo = usuarioService.registrar(usuario);
-            return ResponseEntity.ok(Map.of(
-                    "message", "Usuario registrado correctamente",
-                    "id", nuevo.getId(),
-                    "nombre", nuevo.getNombre(),
-                    "email", nuevo.getEmail()
-            ));
+            return ResponseEntity.ok(usuarioService.obtener(id));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
+    @PostMapping
+    public ResponseEntity<?> crear(@RequestBody Usuario usuario) {
         try {
-            String email = body.get("email");
-            String password = body.get("password");
+            return ResponseEntity.ok(usuarioService.crear(usuario));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
 
-            Usuario usuario = usuarioService.login(email, password);
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizar(@PathVariable Long id, @RequestBody Usuario usuario) {
+        try {
+            return ResponseEntity.ok(usuarioService.actualizar(id, usuario));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
 
-            return ResponseEntity.ok(Map.of(
-                    "message", "Login exitoso",
-                    "id", usuario.getId(),
-                    "nombre", usuario.getNombre(),
-                    "email", usuario.getEmail(),
-                    "cuatrimestre", usuario.getCuatrimestre() != null ? usuario.getCuatrimestre() : 0
-            ));
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminar(@PathVariable Long id) {
+        try {
+            usuarioService.eliminar(id);
+            return ResponseEntity.ok(Map.of("message", "Usuario eliminado"));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }

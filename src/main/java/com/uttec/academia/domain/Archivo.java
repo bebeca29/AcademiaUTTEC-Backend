@@ -17,31 +17,26 @@ public class Archivo {
     @Column(columnDefinition = "TEXT")
     private String descripcion;
 
-    @Column(nullable = false, length = 50)
-    private String tipo;
+    @ManyToOne
+    @JoinColumn(name = "tipo_archivo_id", nullable = false)
+    private TipoArchivo tipoArchivo;
 
-    @Column(nullable = false, length = 100)
-    private String materia;
-
-    @Column(nullable = false, length = 100)
-    private String profesor;
-
-    @Column(nullable = false)
-    private Integer cuatrimestre;
+    @ManyToOne
+    @JoinColumn(name = "oferta_academica_id", nullable = false)
+    private OfertaAcademica ofertaAcademica;
 
     @Column(name = "nombre_archivo", nullable = false, length = 255)
     private String nombreArchivo;
 
-    @Column(name = "url_archivo", nullable = false, columnDefinition = "TEXT")
-    private String urlArchivo;
+    @Column(name = "storage_path", nullable = false, columnDefinition = "TEXT")
+    private String storagePath;
 
     @Column(name = "fecha_subida", nullable = false)
-    private LocalDateTime fechaSubida;
+    private LocalDateTime fechaSubida = LocalDateTime.now();
 
     @Column(nullable = false)
     private Integer descargas = 0;
 
-    // Relación: muchos archivos pertenecen a un usuario
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
@@ -57,23 +52,17 @@ public class Archivo {
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 
-    public String getTipo() { return tipo; }
-    public void setTipo(String tipo) { this.tipo = tipo; }
+    public TipoArchivo getTipoArchivo() { return tipoArchivo; }
+    public void setTipoArchivo(TipoArchivo tipoArchivo) { this.tipoArchivo = tipoArchivo; }
 
-    public String getMateria() { return materia; }
-    public void setMateria(String materia) { this.materia = materia; }
-
-    public String getProfesor() { return profesor; }
-    public void setProfesor(String profesor) { this.profesor = profesor; }
-
-    public Integer getCuatrimestre() { return cuatrimestre; }
-    public void setCuatrimestre(Integer cuatrimestre) { this.cuatrimestre = cuatrimestre; }
+    public OfertaAcademica getOfertaAcademica() { return ofertaAcademica; }
+    public void setOfertaAcademica(OfertaAcademica ofertaAcademica) { this.ofertaAcademica = ofertaAcademica; }
 
     public String getNombreArchivo() { return nombreArchivo; }
     public void setNombreArchivo(String nombreArchivo) { this.nombreArchivo = nombreArchivo; }
 
-    public String getUrlArchivo() { return urlArchivo; }
-    public void setUrlArchivo(String urlArchivo) { this.urlArchivo = urlArchivo; }
+    public String getStoragePath() { return storagePath; }
+    public void setStoragePath(String storagePath) { this.storagePath = storagePath; }
 
     public LocalDateTime getFechaSubida() { return fechaSubida; }
     public void setFechaSubida(LocalDateTime fechaSubida) { this.fechaSubida = fechaSubida; }
